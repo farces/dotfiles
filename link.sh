@@ -1,16 +1,31 @@
-#!/usr/bin/env ruby
+#!/bin/bash
+############################
+# .make.sh
+# This script creates symlinks from the home directory to any desired dotfiles in ~/dotfiles
+############################
 
-# from http://errtheblog.com/posts/89-huba-huba
+########## Variables
 
-home = File.expand_path('~')
+dir=~/dotfiles                    # dotfiles directory
+olddir=~/dotfiles_old             # old dotfiles backup directory
+files="screenrc profile vimrc vim"    # list of files/folders to symlink in homedir
 
-Dir['*'].each do |file|
-  next if file =~ /install/
-  next if file =~ /link.sh/
-  target = File.join(home, ".#{file}")
-  `ln -s #{File.expand_path file} #{target}`
-end
+##########
 
-# git push on commit
-#`echo 'git push' > .git/hooks/post-commit`
-#`chmod 755 .git/hooks/post-commit`
+# create dotfiles_old in homedir
+echo "Creating $olddir for backup of any existing dotfiles in ~"
+mkdir -p $olddir
+echo "...done"
+
+# change to the dotfiles directory
+echo "Changing to the $dir directory"
+cd $dir
+echo "...done"
+
+# move any existing dotfiles in homedir to dotfiles_old directory, then create symlinks
+for file in $files; do
+    echo "Moving any existing dotfiles from ~ to $olddir"
+    mv ~/.$file ~/dotfiles_old/
+    echo "Creating symlink to $file in home directory."
+    ln -s $dir/$file ~/.$file
+done
