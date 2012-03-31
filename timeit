@@ -17,8 +17,8 @@ else
     exit
 fi 
 
-time (for i in `seq $count`; do $program; done) 2> .out
+time (for i in `seq $count`; do $program; done) 2> .timetemp
 
-cat .out | awk -v count="$count" '/real/ { print ((substr($2,1,1)*60)/count)+(substr($2,3,5)/count)"s average ("count" calls)"}'
+cat .timetemp | awk -v count="$count" '/real/ { print ((substr($2,1,1)*60)/count)+(substr($2,3,5)/count)"s average ("count" calls)"}'
 
-#rm .out
+rm .timetemp
