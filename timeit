@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
+# Simple script to run 'time <program>' with multiple invocations of <program>.
+# Used to give an average of running time for <program> which in some cases may 
+# better represent actual performance e.g. for any program that relies on random 
+# chance, or that has non-insignificant overhead on the first invocation.
+#
+# Usage: timeit [count] <program> [program args]
 
 bname=`basename $0`
-usage="Usage: $bname [count] program [args]"
-defaults=0 #did the user omit the count argument
+usage="Usage: $bname [count] <program> [args]"
 
 #1st argument defined, and is an integer: count=int
 #else: count=default[10]
@@ -13,10 +18,12 @@ else
     count=10
 fi
 
+#remaining arguments are program [args], ensure program is executable
 if [ -n "$1" ] && [ -x "$1" ]; then
         program=$1
         shift
     else
+        echo "Program not supplied or not executable."
         echo $usage
         exit
 fi
@@ -24,9 +31,10 @@ fi
 #time execution of a series of programs
 time (for i in `seq $count`; do $program $@; done) 2> .timetemp
 
-#pipe output to awk, split out MmS.SSSs from 'real' stat and convert to seconds, averaged.
-#(minutes*60 + seconds)/count
-cat .timetemp | awk -v count="$count" '/real/ { print ((substr($2,1,1)*60)+(substr($2,3,5)))/count"s average ("count" calls)"}'
+#pipe output to awk, split out MmS.SSSs from 'real' stat and convert to seconds.
+#(minutes*60 + seconds)/count = avg
+cat .timetemp | awk -v count="$count" \
+    '/real/ { print ((substr($2,1,1)*60)+(substr($2,3,5)))/count"s average ("count" calls)"}'
 
 #cleanup
 rm .timetemp
