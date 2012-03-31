@@ -1,34 +1,32 @@
 #!/usr/bin/env bash
 
 bname=`basename $0`
-usage="Usage: $bname [count] program"
-defaultcount=0
+usage="Usage: $bname [count] program [args]"
+defaults=0 #did the user omit the count argument
 
+#1st argument defined, and is an integer: count=int
+#else: count=default[10]
 if [ -n "$1" ] && [ "$1" -eq "$1" ] 2>/dev/null; then
     count=$1
+    shift
 else
     count=10
-    defaultcount=1
 fi
 
-if [ "$defaultcount" -eq 1 ]; then
-    if [ -n "$1" ] && [ -x $1 ]; then
+if [ -n "$1" ] && [ -x "$1" ]; then
         program=$1
+        shift
     else
         echo $usage
         exit
-    fi
-else
-    if [ -n "$2" ] && [ -x "$2" ]; then
-        program=$2
-    else
-        echo $usage
-        exit
-    fi
 fi
 
-time (for i in `seq $count`; do $program; done) 2> .timetemp
+#time execution of a series of programs
+time (for i in `seq $count`; do $program $@; done) 2> .timetemp
 
-cat .timetemp | awk -v count="$count" '/real/ { print ((substr($2,1,1)*60)/count)+(substr($2,3,5)/count)"s average ("count" calls)"}'
+#pipe output to awk, split out MmS.SSSs from 'real' stat and convert to seconds, averaged.
+#(minutes*60 + seconds)/count
+cat .timetemp | awk -v count="$count" '/real/ { print ((substr($2,1,1)*60)+(substr($2,3,5)))/count"s average ("count" calls)"}'
 
+#cleanup
 rm .timetemp
