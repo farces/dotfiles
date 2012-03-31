@@ -1,21 +1,31 @@
 #!/usr/bin/env bash
 
 bname=`basename $0`
-usage="Usage: $bname count program"
+usage="Usage: $bname [count] program"
+defaultcount=0
 
 if [ -n "$1" ] && [ "$1" -eq "$1" ] 2>/dev/null; then
     count=$1
 else
-    echo $usage
-    exit
+    count=10
+    defaultcount=1
 fi
 
-if [ -n "$2" ]; then
-    program=$2
+if [ "$defaultcount" -eq 1 ]; then
+    if [ -n "$1" ] && [ -x $1 ]; then
+        program=$1
+    else
+        echo $usage
+        exit
+    fi
 else
-    echo $usage
-    exit
-fi 
+    if [ -n "$2" ] && [ -x "$2" ]; then
+        program=$2
+    else
+        echo $usage
+        exit
+    fi
+fi
 
 time (for i in `seq $count`; do $program; done) 2> .timetemp
 
