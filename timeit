@@ -8,6 +8,7 @@
 
 bname=`basename $0`
 usage="Usage: $bname [count] <program> [args]"
+default=10
 
 #1st argument defined, and is an integer: count=int
 #else: count=default[10]
@@ -15,7 +16,7 @@ if [ -n "$1" ] && [ "$1" -eq "$1" ] 2>/dev/null; then
     count=$1
     shift
 else
-    count=10
+    count=$default
 fi
 
 #remaining arguments are program [args], ensure program is executable
