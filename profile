@@ -22,5 +22,7 @@ if [ -d "$HOME/bin" ] ; then
 fi
 if [ -d "$HOME/go/bin" ] ; then
     PATH="$HOME/go/bin:$PATH"
-    GOROOT="$HOME/go"
 fi
+
+#for ec2 cpanm install of anyevent/perl libs
+export PERL5LIB=/home/ubuntu/perl5/lib/perl5

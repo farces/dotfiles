@@ -4,8 +4,8 @@ set nocompatible
 set number
 let g:zenburn_high_Contrast = 1
 colors jellybeans
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 set autoindent
 set smartindent
 set ruler
