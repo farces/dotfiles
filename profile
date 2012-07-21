@@ -26,3 +26,4 @@ fi
 
 #for ec2 cpanm install of anyevent/perl libs
 export PERL5LIB=/home/ubuntu/perl5/lib/perl5
+export EDITOR=/usr/bin/vim
