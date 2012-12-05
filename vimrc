@@ -1,9 +1,10 @@
 call pathogen#infect()
+
 set t_Co=256
 set nocompatible
 set number
-let g:zenburn_high_Contrast = 1
-colors jellybeans
+set background=dark
+colorscheme 256-jungle
 set tabstop=2
 set shiftwidth=2
 set autoindent
@@ -30,3 +31,4 @@ autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+autocmd Filetype perl setlocal omnifunc=syntaxcomplete#Complete

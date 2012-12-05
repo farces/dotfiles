@@ -18,12 +18,12 @@ fi
 
 # set PATH so it includes user's private bin if it exists
 if [ -d "$HOME/bin" ] ; then
-    PATH="$HOME/bin:$PATH"
+    PATH="$HOME/bin:$HOME/.local/bin:$PATH"
 fi
 if [ -d "$HOME/go/bin" ] ; then
     PATH="$HOME/go/bin:$PATH"
 fi
 
 #for ec2 cpanm install of anyevent/perl libs
-export PERL5LIB=/home/ubuntu/perl5/lib/perl5
+export PERL5LIB=$PERL5LIB:/home/ubuntu/perl5/lib/perl5
 export EDITOR=/usr/bin/vim
