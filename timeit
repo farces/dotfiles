@@ -29,6 +29,8 @@ if [ -n "$1" ] && [ -x "$1" ]; then
         exit
 fi
 
+x = nil
+
 #time execution of a series of programs
 time (for i in `seq $count`; do $program $@; done) 2> .timetemp
 
